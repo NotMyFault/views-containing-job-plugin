@@ -27,16 +27,20 @@ import java.util.Collection;
 import java.util.Collections;
 
 import hudson.Extension;
-import hudson.model.AbstractProject;
-import hudson.model.Action;
-import hudson.model.TransientProjectActionFactory;
+import hudson.model.AbstractItem;
+import jenkins.model.TransientActionFactory;
 
 @Extension
-public class JobActionFactory extends TransientProjectActionFactory {
+public class JobActionFactory extends TransientActionFactory {
 
 	@Override
-	public Collection<? extends Action> createFor(AbstractProject target) {
+	public Collection createFor(Object target) {
 		return Collections.singleton(new JobAction(target));
+	}
+
+	@Override
+	public Class type() {
+		return AbstractItem.class;
 	}
 
 }

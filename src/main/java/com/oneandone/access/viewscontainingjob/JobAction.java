@@ -26,7 +26,6 @@ package com.oneandone.access.viewscontainingjob;
 import java.util.LinkedList;
 import java.util.List;
 
-import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.TopLevelItem;
 import hudson.model.View;
@@ -34,9 +33,9 @@ import jenkins.model.Jenkins;
 
 public class JobAction implements Action {
 
-	private AbstractProject<?, ?> project;
+	private Object project;
 
-	public JobAction(AbstractProject<?, ?> project) {
+	public JobAction(Object project) {
 		this.project = project;
 	}
 
