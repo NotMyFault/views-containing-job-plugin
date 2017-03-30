@@ -1,0 +1,4 @@
+<?jelly escape-by-default='true'?>
+<div>
+  This plugin adds an action to Jobs with the option to list views vontaining this job.
+</div>
