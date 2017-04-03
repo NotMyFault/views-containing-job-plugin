@@ -22,6 +22,7 @@
 
   <name>Views containing Job</name>
   <description>This plugin adds an action to Jobs with the option to list views vontaining this job.</description>
+  <url>https://wiki.jenkins-ci.org/display/JENKINS/Views+Containing+Job+Plugin</url>
 
   <licenses>
     <license>
