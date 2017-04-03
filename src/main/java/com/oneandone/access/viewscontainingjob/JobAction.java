@@ -42,7 +42,7 @@ public class JobAction implements Action {
 
 	@Override
 	public String getDisplayName() {
-		return Messages.DisplayName();
+		return Messages.displayName();
 	}
 
 	@Override
