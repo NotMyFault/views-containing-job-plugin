@@ -37,18 +37,11 @@
       <email>jochen.fuerbacher@1und1.de</email>
     </developer>
   </developers>
-
-  <repositories>
-    <repository>
-      <id>repo.jenkins-ci.org</id>
-      <url>https://repo.jenkins-ci.org/public/</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>repo.jenkins-ci.org</id>
-      <url>https://repo.jenkins-ci.org/public/</url>
-    </pluginRepository>
-  </pluginRepositories>
+  
+  <scm>
+    <connection>scm:git:ssh://github.com/jenkinsci/views-containing-job-plugin.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/views-containing-job-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/views-containing-job-plugin</url>
+  </scm>
 
 </project>
