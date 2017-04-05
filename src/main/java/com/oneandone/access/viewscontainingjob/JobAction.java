@@ -58,12 +58,12 @@ public class JobAction implements Action {
 	public List<View> getViews() {
 		List<View> views = new LinkedList<>();
 		Jenkins instance = Jenkins.getInstance();
-		if(instance == null)
+		if (instance == null)
 			return null;
-		
+
 		for (View view : instance.getViews()) {
 			for (TopLevelItem item : view.getAllItems()) {
-				if (item.equals(this.project)) {
+				if (((AbstractItem) item).equals(this.project)) {
 					views.add(view);
 				}
 			}
