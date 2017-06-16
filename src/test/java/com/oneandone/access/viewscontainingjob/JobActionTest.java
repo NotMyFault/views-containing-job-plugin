@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 import hudson.model.FreeStyleProject;
+import hudson.model.ListView;
 
 public class JobActionTest {
 
@@ -43,6 +44,23 @@ public class JobActionTest {
 		FreeStyleProject freestyle = j.createFreeStyleProject();
 		JobAction action = new JobAction(freestyle);
 		assertTrue(action.getViews().size() == 1);
+	}
+
+	@Test
+	public void testFreestyle() throws IOException {
+		FreeStyleProject freestyle = j.createFreeStyleProject();
+
+		ListView viewNonEmpty = new ListView("NonEmptyView");
+		j.jenkins.addView(viewNonEmpty);
+		ListView viewEmpty = new ListView("EmptyView");
+		j.jenkins.addView(viewEmpty);
+
+		viewNonEmpty.add(freestyle);
+
+		JobAction action = new JobAction(freestyle);
+		assertTrue(action.getViews().size() == 2);
+		assertTrue(action.getViews().contains(viewNonEmpty));
+		assertTrue(!action.getViews().contains(viewEmpty));
 	}
 
 }
