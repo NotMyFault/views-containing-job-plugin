@@ -23,32 +23,19 @@
  */
 package com.oneandone.access.viewscontainingjob;
 
-import java.util.Collection;
-import java.util.Collections;
+import hudson.Plugin;
+import jenkins.model.Jenkins;
 
-import com.cloudbees.hudson.plugins.folder.Folder;
-
-import hudson.Extension;
-import hudson.model.AbstractItem;
-import hudson.model.Action;
-import jenkins.model.TransientActionFactory;
-
-@Extension
-public class JobActionFactory extends TransientActionFactory<AbstractItem> {
-
-	@Override
-	public Collection<? extends Action> createFor(AbstractItem target) {
-		if (Utils.isFoldersPluginAvailable()
-				&& target.getParent() instanceof Folder) {
-			return Collections.emptySet();
+public class Utils {
+	
+	public static boolean isFoldersPluginAvailable() {
+		try {
+			Plugin folders = Jenkins.getInstance()
+					.getPlugin("cloudbees-folder");
+			return folders != null;
+		} catch (NullPointerException e) {
+			return false;
 		}
-
-		return Collections.singleton(new JobAction(target));
-	}
-
-	@Override
-	public Class<AbstractItem> type() {
-		return AbstractItem.class;
 	}
 
 }

@@ -31,6 +31,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
+import com.cloudbees.hudson.plugins.folder.Folder;
+
 import hudson.model.FreeStyleProject;
 import hudson.model.ListView;
 
@@ -61,6 +63,38 @@ public class JobActionTest {
 		assertTrue(action.getViews().size() == 2);
 		assertTrue(action.getViews().contains(viewNonEmpty));
 		assertTrue(!action.getViews().contains(viewEmpty));
+	}
+
+	@Test
+	public void testFolders() throws IOException {
+		Folder folder = j.createProject(Folder.class);
+		folder.createProject(FreeStyleProject.class, "FreestyleInFolder");
+
+		assertTrue(folder.getItems().size() == 1);
+
+		ListView viewNonEmpty = new ListView("NonEmptyView");
+		j.jenkins.addView(viewNonEmpty);
+		ListView viewEmpty = new ListView("EmptyView");
+		j.jenkins.addView(viewEmpty);
+
+		viewNonEmpty.add(folder);
+
+		JobAction action = new JobAction(folder);
+		assertTrue(action.getViews().size() == 2);
+		assertTrue(action.getViews().contains(viewNonEmpty));
+		assertTrue(!action.getViews().contains(viewEmpty));
+
+	}
+
+	@Test
+	public void testFoldersAction() throws IOException {
+		Folder folder = j.createProject(Folder.class);
+		folder.createProject(FreeStyleProject.class, "FreestyleProject");
+
+		assertTrue(folder.getAction(JobAction.class) != null);
+		FreeStyleProject freestyle = (FreeStyleProject) folder
+				.getItem("FreestyleProject");
+		assertTrue(freestyle.getAction(JobAction.class) == null);
 	}
 
 }
