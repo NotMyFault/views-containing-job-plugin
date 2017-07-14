@@ -38,6 +38,7 @@
       <artifactId>cloudbees-folder</artifactId>
       <version>6.0.0</version>
       <scope>test</scope>
+      <optional>true</optional>
     </dependency>
   </dependencies>
   

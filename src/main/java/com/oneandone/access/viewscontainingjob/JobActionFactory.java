@@ -29,6 +29,7 @@ import java.util.Collections;
 import hudson.Extension;
 import hudson.model.AbstractItem;
 import hudson.model.Action;
+import hudson.model.Hudson;
 import jenkins.model.TransientActionFactory;
 
 @Extension
@@ -36,9 +37,7 @@ public class JobActionFactory extends TransientActionFactory<AbstractItem> {
 
 	@Override
 	public Collection<? extends Action> createFor(AbstractItem target) {
-		if (target.getParent().getClass().getName().equals(JobTypes.FOLDER)
-				|| target.getParent().getClass().getName()
-						.equals(JobTypes.PIPELINE_MULTIBRANCH)) {
+		if (!(target.getParent() instanceof Hudson)) {
 			return Collections.emptySet();
 		}
 		return Collections.singleton(new JobAction(target));
