@@ -23,19 +23,9 @@
  */
 package com.oneandone.access.viewscontainingjob;
 
-import hudson.Plugin;
-import jenkins.model.Jenkins;
+public class JobTypes {
 
-public class Utils {
-	
-	public static boolean isFoldersPluginAvailable() {
-		try {
-			Plugin folders = Jenkins.getInstance()
-					.getPlugin("cloudbees-folder");
-			return folders != null;
-		} catch (NullPointerException e) {
-			return false;
-		}
-	}
+	public static final String FOLDER = "com.cloudbees.hudson.plugins.folder.Folder";
+	public static final String PIPELINE_MULTIBRANCH = "org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject";
 
 }

@@ -26,8 +26,6 @@ package com.oneandone.access.viewscontainingjob;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.cloudbees.hudson.plugins.folder.Folder;
-
 import hudson.Extension;
 import hudson.model.AbstractItem;
 import hudson.model.Action;
@@ -38,11 +36,11 @@ public class JobActionFactory extends TransientActionFactory<AbstractItem> {
 
 	@Override
 	public Collection<? extends Action> createFor(AbstractItem target) {
-		if (Utils.isFoldersPluginAvailable()
-				&& target.getParent() instanceof Folder) {
+		if (target.getParent().getClass().getName().equals(JobTypes.FOLDER)
+				|| target.getParent().getClass().getName()
+						.equals(JobTypes.PIPELINE_MULTIBRANCH)) {
 			return Collections.emptySet();
 		}
-
 		return Collections.singleton(new JobAction(target));
 	}
 
