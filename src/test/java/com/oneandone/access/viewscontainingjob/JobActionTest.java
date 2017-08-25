@@ -23,6 +23,7 @@
  */
 package com.oneandone.access.viewscontainingjob;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -97,4 +98,22 @@ public class JobActionTest {
 		assertTrue(freestyle.getAction(JobAction.class) == null);
 	}
 
+	@Test
+	public void testDisplayName() {
+		JobAction action = new JobAction(null);
+		assertEquals("Views containing Job", action.getDisplayName());
+	}
+
+	@Test
+	public void testUrlName() {
+		JobAction action = new JobAction(null);
+		assertEquals("view", action.getUrlName());
+	}
+
+	@Test
+	public void testIconFileName() {
+		JobAction action = new JobAction(null);
+		assertEquals("/plugin/views-containing-job/img/view.svg",
+				action.getIconFileName());
+	}
 }
