@@ -32,29 +32,61 @@ import hudson.model.TopLevelItem;
 import hudson.model.View;
 import jenkins.model.Jenkins;
 
+/**
+ * Class implementing the job action.
+ * 
+ * @author Jochen A. Fuerbacher
+ *
+ */
 public class JobAction implements Action {
 
 	private AbstractItem project;
 
+	/**
+	 * Constructor for the job action.
+	 * 
+	 * @param project
+	 *            The project to create this action for.
+	 */
 	public JobAction(AbstractItem project) {
 		this.project = project;
 	}
 
+	/**
+	 * Getter for the display name of this action.
+	 * 
+	 * @return The display name as String.
+	 */
 	@Override
 	public String getDisplayName() {
 		return Messages.displayName();
 	}
 
+	/**
+	 * Getter for the icon file name of this action.
+	 * 
+	 * @return The icon file name (incl. the file path) for this action.
+	 */
 	@Override
 	public String getIconFileName() {
 		return "/plugin/views-containing-job/img/view.svg";
 	}
 
+	/**
+	 * Getter for the url to the site that shows the views.
+	 * 
+	 * @return The (relative) url to the site that shows the views.
+	 */
 	@Override
 	public String getUrlName() {
 		return "view";
 	}
 
+	/**
+	 * Getter for a list of all views containing the job with this action.
+	 * 
+	 * @return A list of all views containing the job with this action.
+	 */
 	public List<View> getViews() {
 		List<View> views = new LinkedList<>();
 		Jenkins instance = Jenkins.getInstance();

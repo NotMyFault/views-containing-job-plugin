@@ -32,9 +32,24 @@ import hudson.model.Action;
 import hudson.model.Hudson;
 import jenkins.model.TransientActionFactory;
 
+/**
+ * Class implementing the TransientActionFactory extension point.
+ * 
+ * @author Jochen A. Fuerbacher
+ *
+ */
 @Extension
 public class JobActionFactory extends TransientActionFactory<AbstractItem> {
 
+	/**
+	 * Creates the JobAction for the provided item.
+	 * 
+	 * @param target
+	 *            Item, to create the action for.
+	 * 
+	 * @return The job action als singleton, if the parent is instance of
+	 *         Hudson, otherwise an empty set.
+	 */
 	@Override
 	public Collection<? extends Action> createFor(AbstractItem target) {
 		if (!(target.getParent() instanceof Hudson)) {
@@ -43,6 +58,11 @@ public class JobActionFactory extends TransientActionFactory<AbstractItem> {
 		return Collections.singleton(new JobAction(target));
 	}
 
+	/**
+	 * The type of object this factory cares about.
+	 * 
+	 * @return The type of object this factory cares about.
+	 */
 	@Override
 	public Class<AbstractItem> type() {
 		return AbstractItem.class;
