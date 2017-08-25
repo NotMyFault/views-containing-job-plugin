@@ -35,6 +35,7 @@ import org.jvnet.hudson.test.JenkinsRule;
 
 import com.cloudbees.hudson.plugins.folder.Folder;
 
+import hudson.model.AbstractItem;
 import hudson.model.Action;
 import hudson.model.FreeStyleProject;
 
@@ -74,6 +75,12 @@ public class JobActionFactoryTest {
 
 		assertTrue(collection2 != null);
 		assertTrue(collection2.size() == 0);
+	}
+
+	@Test
+	public void testType() {
+		JobActionFactory factory = new JobActionFactory();
+		assertEquals(AbstractItem.class, factory.type());
 	}
 
 }
