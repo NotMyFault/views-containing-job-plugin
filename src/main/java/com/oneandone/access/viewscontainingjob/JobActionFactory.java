@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Jochen A. Fuerbacher, 1&1 Telecommunication SE
+ * Copyright 2017-2019 Jochen A. Fuerbacher, 1&1 Telecommunication SE
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +26,18 @@ package com.oneandone.access.viewscontainingjob;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.cloudbees.hudson.plugins.folder.Folder;
+
 import hudson.Extension;
+import hudson.PluginWrapper;
 import hudson.model.AbstractItem;
 import hudson.model.Action;
 import hudson.model.Hudson;
+import hudson.model.ItemGroup;
+import jenkins.model.Jenkins;
 import jenkins.model.TransientActionFactory;
+
+import org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject;
 
 /**
  * Class implementing the TransientActionFactory extension point.
@@ -52,10 +59,32 @@ public class JobActionFactory extends TransientActionFactory<AbstractItem> {
 	 */
 	@Override
 	public Collection<? extends Action> createFor(AbstractItem target) {
-		if (!(target.getParent() instanceof Hudson)) {
-			return Collections.emptySet();
+		if(isHudson(target.getParent()) || isFolder(target.getParent()) || isWorkflowMultiBranchProject(target.getParent())) {
+			return Collections.singleton(new JobAction(target));
 		}
-		return Collections.singleton(new JobAction(target));
+		return Collections.emptySet();
+	}
+
+	private boolean isHudson(ItemGroup<?> item) {
+		return item instanceof Hudson;
+	}
+
+	private boolean isFolder(ItemGroup<?> item) {
+		return isFoldersPluginAvailable() && (item instanceof Folder);
+	}
+
+	private boolean isFoldersPluginAvailable() {
+		PluginWrapper plugin = Jenkins.getInstance().getPluginManager().getPlugin("cloudbees-folder");
+		return (plugin != null && plugin.isActive());
+	}
+
+	private boolean isWorkflowMultiBranchProject(ItemGroup<?> item) {
+		return isPipelineMultibranchPluginAvailable() && (item instanceof WorkflowMultiBranchProject);
+	}
+
+	private boolean isPipelineMultibranchPluginAvailable() {
+		PluginWrapper plugin = Jenkins.getInstance().getPluginManager().getPlugin("workflow-multibranch");
+		return (plugin != null && plugin.isActive());
 	}
 
 	/**
