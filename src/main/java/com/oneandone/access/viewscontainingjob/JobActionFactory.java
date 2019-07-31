@@ -26,6 +26,7 @@ package com.oneandone.access.viewscontainingjob;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.cloudbees.hudson.plugins.folder.AbstractFolder;
 import com.cloudbees.hudson.plugins.folder.Folder;
 
 import hudson.Extension;
@@ -59,7 +60,7 @@ public class JobActionFactory extends TransientActionFactory<AbstractItem> {
 	 */
 	@Override
 	public Collection<? extends Action> createFor(AbstractItem target) {
-		if(isHudson(target.getParent()) || isFolder(target.getParent()) || isWorkflowMultiBranchProject(target.getParent())) {
+		if(isHudson(target.getParent()) || isFolder(target.getParent())) {
 			return Collections.singleton(new JobAction(target));
 		}
 		return Collections.emptySet();
@@ -70,21 +71,7 @@ public class JobActionFactory extends TransientActionFactory<AbstractItem> {
 	}
 
 	private boolean isFolder(ItemGroup<?> item) {
-		return isFoldersPluginAvailable() && (item instanceof Folder);
-	}
-
-	private boolean isFoldersPluginAvailable() {
-		PluginWrapper plugin = Jenkins.getInstance().getPluginManager().getPlugin("cloudbees-folder");
-		return (plugin != null && plugin.isActive());
-	}
-
-	private boolean isWorkflowMultiBranchProject(ItemGroup<?> item) {
-		return isPipelineMultibranchPluginAvailable() && (item instanceof WorkflowMultiBranchProject);
-	}
-
-	private boolean isPipelineMultibranchPluginAvailable() {
-		PluginWrapper plugin = Jenkins.getInstance().getPluginManager().getPlugin("workflow-multibranch");
-		return (plugin != null && plugin.isActive());
+		return Util.isFoldersPluginAvailable() && (item instanceof AbstractFolder);
 	}
 
 	/**

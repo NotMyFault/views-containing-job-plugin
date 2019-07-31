@@ -36,9 +36,16 @@
             <br />
             
             <ul>
-            	<j:forEach var="view" items="${it.views}">
-            		<li><a href="${view.getAbsoluteUrl()}">${view.getDisplayName()}</a></li>
-            	</j:forEach>
+              <j:forEach var="view" items="${it.views}">
+                <j:choose>
+                  <j:when test="${view.getOwner().getFullName().isEmpty()}">
+                    <li><a href="${view.getAbsoluteUrl()}">${view.getViewName()} (Jenkins)</a></li>
+                  </j:when>
+                  <j:otherwise>
+                    <li><a href="${view.getAbsoluteUrl()}">${view.getViewName()} (${view.getOwner().getFullName()})</a></li>
+                  </j:otherwise>
+                </j:choose>
+              </j:forEach>
             </ul>
  
         </l:main-panel>
