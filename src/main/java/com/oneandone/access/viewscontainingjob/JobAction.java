@@ -98,7 +98,7 @@ public class JobAction implements Action {
 		checkViews(Jenkins.getInstance().getViews());
 
 		// Check views recursively
-		if(Util.isFoldersPluginAvailable()) {
+		if (Util.isFoldersPluginAvailable()) {
 			checkFolderViews(this.project.getParent());
 		}
 
@@ -115,7 +115,7 @@ public class JobAction implements Action {
 			}
 		}
 	}
-	
+
 	private void checkViews(Collection<View> parentViews) {
 		for (View view : parentViews) {
 			for (TopLevelItem item : view.getAllItems()) {

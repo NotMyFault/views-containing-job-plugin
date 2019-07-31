@@ -27,18 +27,13 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.cloudbees.hudson.plugins.folder.AbstractFolder;
-import com.cloudbees.hudson.plugins.folder.Folder;
 
 import hudson.Extension;
-import hudson.PluginWrapper;
 import hudson.model.AbstractItem;
 import hudson.model.Action;
 import hudson.model.Hudson;
 import hudson.model.ItemGroup;
-import jenkins.model.Jenkins;
 import jenkins.model.TransientActionFactory;
-
-import org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject;
 
 /**
  * Class implementing the TransientActionFactory extension point.
@@ -53,14 +48,14 @@ public class JobActionFactory extends TransientActionFactory<AbstractItem> {
 	 * Creates the JobAction for the provided item.
 	 * 
 	 * @param target
-	 *            Item, to create the action for.
+	 *                   Item, to create the action for.
 	 * 
 	 * @return The job action als singleton, if the parent is instance of
 	 *         Hudson, otherwise an empty set.
 	 */
 	@Override
 	public Collection<? extends Action> createFor(AbstractItem target) {
-		if(isHudson(target.getParent()) || isFolder(target.getParent())) {
+		if (isHudson(target.getParent()) || isFolder(target.getParent())) {
 			return Collections.singleton(new JobAction(target));
 		}
 		return Collections.emptySet();
@@ -71,7 +66,8 @@ public class JobActionFactory extends TransientActionFactory<AbstractItem> {
 	}
 
 	private boolean isFolder(ItemGroup<?> item) {
-		return Util.isFoldersPluginAvailable() && (item instanceof AbstractFolder);
+		return Util.isFoldersPluginAvailable()
+				&& (item instanceof AbstractFolder);
 	}
 
 	/**
