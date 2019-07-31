@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Jochen A. Fuerbacher, 1&1 Telecommunication SE
+ * Copyright 2017-2019 Jochen A. Fuerbacher, 1&1 Telecommunication SE
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,16 @@
  */
 package com.oneandone.access.viewscontainingjob;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.cloudbees.hudson.plugins.folder.AbstractFolder;
+import com.cloudbees.hudson.plugins.folder.Folder;
+
 import hudson.model.AbstractItem;
 import hudson.model.Action;
+import hudson.model.ItemGroup;
 import hudson.model.TopLevelItem;
 import hudson.model.View;
 import jenkins.model.Jenkins;
@@ -41,12 +46,13 @@ import jenkins.model.Jenkins;
 public class JobAction implements Action {
 
 	private AbstractItem project;
+	private transient List<View> views = new LinkedList<>();
 
 	/**
 	 * Constructor for the job action.
 	 * 
 	 * @param project
-	 *            The project to create this action for.
+	 *                    The project to create this action for.
 	 */
 	public JobAction(AbstractItem project) {
 		this.project = project;
@@ -88,18 +94,36 @@ public class JobAction implements Action {
 	 * @return A list of all views containing the job with this action.
 	 */
 	public List<View> getViews() {
-		List<View> views = new LinkedList<>();
-		Jenkins instance = Jenkins.getInstance();
+		// Check Jenkins views
+		checkViews(Jenkins.getInstance().getViews());
 
-		for (View view : instance.getViews()) {
+		// Check views recursively
+		if (Util.isFoldersPluginAvailable()) {
+			checkFolderViews(this.project.getParent());
+		}
+
+		return this.views;
+	}
+
+	private void checkFolderViews(ItemGroup<?> item) {
+		if (item instanceof AbstractFolder) {
+			AbstractFolder<?> folder = (AbstractFolder<?>) item;
+			checkViews(folder.getViews());
+			if (folder.getParent() instanceof AbstractFolder) {
+				AbstractFolder<?> parentFolder = (Folder) folder.getParent();
+				checkFolderViews(parentFolder);
+			}
+		}
+	}
+
+	private void checkViews(Collection<View> parentViews) {
+		for (View view : parentViews) {
 			for (TopLevelItem item : view.getAllItems()) {
 				if (((AbstractItem) item).equals(this.project)) {
 					views.add(view);
 				}
 			}
 		}
-
-		return views;
 	}
 
 }

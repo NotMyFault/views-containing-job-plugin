@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Jochen A. Fuerbacher, 1&1 Telecommunication SE
+ * Copyright 2017-2019 Jochen A. Fuerbacher, 1&1 Telecommunication SE
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -95,7 +95,7 @@ public class JobActionTest {
 		assertTrue(folder.getAction(JobAction.class) != null);
 		FreeStyleProject freestyle = (FreeStyleProject) folder
 				.getItem("FreestyleProject");
-		assertTrue(freestyle.getAction(JobAction.class) == null);
+		assertTrue(freestyle.getAction(JobAction.class) != null);
 	}
 
 	@Test

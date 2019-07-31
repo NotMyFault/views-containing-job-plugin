@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Jochen A. Fuerbacher, 1&1 Telecommunication SE
+ * Copyright 2017-2019 Jochen A. Fuerbacher, 1&1 Telecommunication SE
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,10 +26,13 @@ package com.oneandone.access.viewscontainingjob;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.cloudbees.hudson.plugins.folder.AbstractFolder;
+
 import hudson.Extension;
 import hudson.model.AbstractItem;
 import hudson.model.Action;
 import hudson.model.Hudson;
+import hudson.model.ItemGroup;
 import jenkins.model.TransientActionFactory;
 
 /**
@@ -45,17 +48,26 @@ public class JobActionFactory extends TransientActionFactory<AbstractItem> {
 	 * Creates the JobAction for the provided item.
 	 * 
 	 * @param target
-	 *            Item, to create the action for.
+	 *                   Item, to create the action for.
 	 * 
 	 * @return The job action als singleton, if the parent is instance of
 	 *         Hudson, otherwise an empty set.
 	 */
 	@Override
 	public Collection<? extends Action> createFor(AbstractItem target) {
-		if (!(target.getParent() instanceof Hudson)) {
-			return Collections.emptySet();
+		if (isHudson(target.getParent()) || isFolder(target.getParent())) {
+			return Collections.singleton(new JobAction(target));
 		}
-		return Collections.singleton(new JobAction(target));
+		return Collections.emptySet();
+	}
+
+	private boolean isHudson(ItemGroup<?> item) {
+		return item instanceof Hudson;
+	}
+
+	private boolean isFolder(ItemGroup<?> item) {
+		return Util.isFoldersPluginAvailable()
+				&& (item instanceof AbstractFolder);
 	}
 
 	/**
