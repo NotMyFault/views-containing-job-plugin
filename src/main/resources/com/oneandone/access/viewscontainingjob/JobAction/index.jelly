@@ -27,7 +27,7 @@
     <l:layout title="Views containing job">
         <l:side-panel>
     		<l:tasks>
-      			<l:task href="${rootURL}/" title="${%Back to Jenkins}" icon="images/24x24/up.gif"/>
+      			<l:task href="${rootURL}/" title="${%Back to Jenkins}" icon="icon-up icon-md"/>
       		</l:tasks>
         </l:side-panel>
  		
